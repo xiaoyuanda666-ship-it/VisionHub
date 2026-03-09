@@ -1,8 +1,8 @@
 import { HistoryManager } from "../../utils/HistoryManager.js";
 import { getSystemPrompt } from "../../utils/systemPrompt.js";
 import { MetaAbilityManager } from "./MetaAbilityManager.js";
-import { LLMManager } from "../engine/LLMManager.js"
-import { runTool } from "../toolRouter.js";
+import { LLMManager } from "../ai/LLMManager.js"
+import { runTool } from "../agent/tools/toolRouter.js";
 const llm = new LLMManager()
 await llm.init()
 

@@ -1,8 +1,7 @@
-import fetch from "node-fetch";
-
 export async function search_web({ query }) {
   try {
     const url = `https://api.duckduckgo.com/?q=${encodeURIComponent(query)}&format=json`;
+    // Node 22+ 原生 fetch
     const res = await fetch(url);
     const data = await res.json();
 

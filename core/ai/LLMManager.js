@@ -56,6 +56,14 @@ export class LLMManager {
       throw new Error("LLMManager not initialized")
     }
     const client = this.getClientByModel(model)
-    return client.send(messages, options)
+    const res = await client.send(messages, options)
+
+    // 如果是 DeepSeekClient 返回 { text, tool_calls, raw }
+    // 转成统一 { content, tool_calls, raw }
+    return {
+      content: res.content ?? res.text ?? "",
+      tool_calls: res.tool_calls ?? [],
+      raw: res
+    }
   }
 }

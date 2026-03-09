@@ -1,9 +1,9 @@
 import fs from 'fs-extra';
 import path from 'path';
 import crypto from 'crypto';
-import { OpenAIClient } from '../engine/providers/OpenAIClient.js';
-import { DeepSeekClient } from '../engine/providers/DeepSeekClient.js';
-import { QwenClient } from '../engine/providers/QwenLLMClient.js';
+import { OpenAIClient } from '../core/providers/OpenAIClient.js';
+import { DeepSeekClient } from '../core/providers/DeepSeekClient.js';
+import { QwenClient } from '../core/providers/QwenLLMClient.js';
 
 const STORE_FILE = path.resolve('./apikeys.json');
 

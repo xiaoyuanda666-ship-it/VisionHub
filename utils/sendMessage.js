@@ -1,5 +1,5 @@
 // utils/sendMessage.js
-import { nowString } from "../utils/time.js";
+import { nowString } from "./time.js";
 
 export async function sendMessage(agent, text) {
   const nowStr = nowString();

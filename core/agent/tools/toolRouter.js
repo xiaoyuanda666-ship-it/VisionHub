@@ -1,11 +1,11 @@
-import { read_file } from "./tools/read_file.js";
-import { write_file } from "./tools/write_file.js";
-import { search_web } from "./tools/search_web.js";
-import { call_api } from "./tools/call_api.js";
-import { execute_code } from "./tools/execute_code.js";
-import { list_dir} from "./tools/list_dir.js";
-import { delete_file } from "./tools/delete_file.js";
-import { http_request } from "./tools/http_request.js";
+import { read_file } from "./impl/read_file.js";
+import { write_file } from "./impl/write_file.js";
+import { search_web } from "./impl/search_web.js";
+import { call_api } from "./impl/call_api.js";
+import { execute_code } from "./impl/execute_code.js";
+import { list_dir} from "./impl/list_dir.js";
+import { delete_file } from "./impl/delete_file.js";
+import { http_request } from "./impl/http_request.js";
 
 export async function runTool(name, args) {
 

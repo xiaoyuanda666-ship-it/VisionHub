@@ -1,5 +1,5 @@
 import 'dotenv/config'
-import { DeepSeekClient } from '../engine/providers/DeepSeekClient.js'
+import { DeepSeekClient } from '../core/providers/DeepSeekClient.js'
 
 test.skip("DeepSeek API should respond", async () => {
   const apiKey = process.env.DEEPSEEK_API_KEY

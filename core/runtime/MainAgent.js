@@ -1,6 +1,6 @@
 import { nowString } from "../utils/time.js";
 import { sendMessage } from "../utils/sendMessage.js";
-import { Agent } from "./agent/agent.js";
+import { Agent } from "../agent/agent.js";
 import WebSocket from "ws";
 const ws = new WebSocket("ws://localhost:8080"); // 持有一个 WebSocket 连接，用于接收外部事件
 

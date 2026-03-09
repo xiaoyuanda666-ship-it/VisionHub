@@ -1,5 +1,5 @@
-import { DeepSeekClient } from './providers/DeepSeekClient.js'
-import { OpenAIClient } from './providers/OpenAIClient.js'
+import { DeepSeekClient } from '../providers/DeepSeekClient.js'
+import { OpenAIClient } from '../providers/OpenAIClient.js'
 export class LLMAdapter {
 
   constructor(config) {

@@ -1,34 +1,18 @@
-import { HistoryManager } from "./utils/HistoryManager.js";
-import { getSystemPrompt } from "./utils/systemPrompt.js";
+import { HistoryManager } from "../../utils/HistoryManager.js";
+import { getSystemPrompt } from "../../utils/systemPrompt.js";
 import { MetaAbilityManager } from "./MetaAbilityManager.js";
-import { loadAllClients } from '../../managers/apiKeyManager.js';
-
-import { callLLM } from "../engine/llmClient.js";
+import { LLMManager } from "../engine/LLMManager.js"
 import { runTool } from "../toolRouter.js";
+const llm = new LLMManager()
+await llm.init()
 
-let llmClient;
+// 测试调用 LLM
+const res = await llm.call(
+  "deepseek-chat",
+  [{ role: "user", content: "say hello" }]
+)
 
-// 启动程序时加载所有 client，选择第一个可用
-export async function initLLM() {
-  const clients = await loadAllClients();
-  const firstProvider = Object.keys(clients)[0];
-  if (!firstProvider) throw new Error('No LLM clients available');
-  llmClient = clients[firstProvider];
-  console.log('Using LLM provider:', firstProvider);
-}
-
-// 统一调用接口
-export async function callLLM(messages, options = {}) {
-  if (!llmClient) throw new Error('LLM client not initialized');
-  const res = await llmClient.send(messages, options);
-  // 兼容旧接口
-  return {
-    content: res.text,           // 旧 callLLM content
-    tool_calls: res.tool_calls,  // 工具调用保持一致
-    raw: res.raw
-  };
-}
-
+console.log(res.text) // "Hello, how can I assist you today?"
 
 export class Agent {
   constructor() {

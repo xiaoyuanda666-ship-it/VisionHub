@@ -11,6 +11,7 @@ import { send_message } from "./impl/send_message.js";
 import { modify_nowMemory } from "./memory/modify_nowMemory.js";
 import { modify_self } from "./memory/modify_self.js";
 import { modify_talking_to } from "./memory/modify_talking_to.js";
+import { activate_skill } from "./impl/activate_skill.js";
 
 export async function runTool(name, args, context) {
 
@@ -30,6 +31,9 @@ export async function runTool(name, args, context) {
 
     case "modify_talking_to":
       return modify_talking_to(args, context)
+    
+    case "activate_skill":
+      return activate_skill(args, context)
 
     case "modify_self":
     return modify_self(args, context)

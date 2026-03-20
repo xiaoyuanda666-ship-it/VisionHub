@@ -22,7 +22,7 @@ export class DeepSeekClient extends BaseLLMClient {
       model: this.model,
       messages,
       tools,
-      temperature: options.temperature ?? 0.2,
+      temperature: options.temperature ?? 0.5,
       max_tokens: options.max_tokens ?? 1024
     })
 

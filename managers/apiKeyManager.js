@@ -1,11 +1,17 @@
 import fs from 'fs-extra';
+import os from "os"
 import path from 'path';
 import crypto from 'crypto';
 import { OpenAIClient } from '../core/providers/OpenAIClient.js';
 import { DeepSeekClient } from '../core/providers/DeepSeekClient.js';
 import { QwenClient } from '../core/providers/QwenLLMClient.js';
 
-const STORE_FILE = path.resolve('./apikeys.json');
+// const STORE_FILE = path.resolve('./apikeys.json');
+const STORE_FILE = path.join(
+  os.homedir(),
+  ".visioncore",
+  "apikeys.json"
+)
 
 // --- 加密设置 ---
 const ALGORITHM = 'aes-256-gcm';
@@ -33,15 +39,17 @@ function decrypt(data) {
   return decrypted;
 }
 
-// --- 保存/读取 API Key ---
+// // --- 保存/读取 API Key ---
 async function saveApiKey(provider, apiKey) {
-  let store = {};
+  let store = {}
+  const dir = path.dirname(STORE_FILE)
+  await fs.ensureDir(dir)
   if (await fs.pathExists(STORE_FILE)) {
-    const raw = await fs.readFile(STORE_FILE, 'utf8');
-    store = JSON.parse(raw);
+    const raw = await fs.readFile(STORE_FILE, 'utf8')
+    store = JSON.parse(raw)
   }
-  store[provider] = encrypt(apiKey);
-  await fs.writeFile(STORE_FILE, JSON.stringify(store, null, 2));
+  store[provider] = encrypt(apiKey)
+  await fs.writeFile(STORE_FILE, JSON.stringify(store, null, 2))
 }
 
 async function loadApiKeys() {
@@ -71,7 +79,7 @@ async function detectProvider(apiKey) {
         if (ok) return name;
         return null;
       } catch (err) {
-        console.error(`Provider ${name} failed:`, err.message);
+        // console.error(`Provider ${name} failed:`, err.message);
         return null;
       }
     })()

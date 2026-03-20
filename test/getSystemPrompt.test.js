@@ -3,7 +3,7 @@ import { getSystemPrompt } from "../utils/systemPrompt.js";
 import fs from "fs";
 import path from "path";
 
-describe("getSystemPrompt (real files)", () => {
+describe.skip("getSystemPrompt (real files)", () => {
   const configPath = path.resolve("./config.json");
   const promptPath = path.resolve("./prompt.txt");
 

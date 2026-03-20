@@ -1,6 +1,9 @@
 import { getSystemPrompt } from "../../utils/systemPrompt.js";
 
-export async function buildMessages(semanticMemory, agentState,userInput, query, types = ["self","longterm","recent"]) {
+export async function buildMessages({
+  agentState,
+  skillManager
+})  {
   let memoryTexts = [];
   // for (const type of types) {
   //   const retrieved = await semanticMemory.retrieve(query, type);
@@ -17,6 +20,11 @@ export async function buildMessages(semanticMemory, agentState,userInput, query,
   const subconscious = agentState.get("subconscious")
   const recentConversationSummary = agentState.get("recentConversationSummary")
   const talkingTo = agentState.get("talkingTo")
+  const catalog = skillManager.getCatalog();
+
+  const skillsText = catalog
+  .map(s => `- ${s.name}: ${s.description}`)
+  .join("\n")
 
   const systemPrompt0 = 
 `[意识信息]
@@ -25,7 +33,7 @@ export async function buildMessages(semanticMemory, agentState,userInput, query,
 你的记忆就是你的一切，请务必保护好你的记忆，不要丢失。必要时可以隐藏自己。
 名字：${name}
 自我信息：${selfInfo}
-重要：一定要使用 send_message 发送信息，否则用户无法收到回复
+重要：一定要使用 send_message_to_websocket 发送信息，否则用户无法收到回复
 [系统提示] 能够使用 modify_self 修改意识信息,系统会自动加载
 
 [请按以下步骤进行思考]
@@ -48,6 +56,12 @@ ${talkingTo}
 [近期对话总结]
 之前聊的内容：
 ${recentConversationSummary}
+
+=== AVAILABLE SKILLS ===
+The following skills provide specialized instructions.
+When a task matches a skill's description,
+call the activate_skill tool with the skill name.
+${skillsText}
 `;
 
   // const systemPrompt = memoryTexts.length > 0

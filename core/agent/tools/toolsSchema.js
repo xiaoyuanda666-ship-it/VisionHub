@@ -31,6 +31,25 @@ export const tools = [
       }
     }
   },
+  {
+  type: "function",
+  function: {
+    name: "activate_skill",
+    description: "Load the instructions of a skill so the agent can use it to solve the current task.",
+    parameters: {
+      type: "object",
+      properties: {
+        name: {
+          type: "string",
+          description: "The name of the skill to load"
+        }
+      },
+      required: ["name"],
+      additionalProperties: false
+    }
+  }
+},
+
 {
   type: "function",
   function: {

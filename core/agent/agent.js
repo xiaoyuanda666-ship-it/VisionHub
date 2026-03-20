@@ -10,6 +10,7 @@ import { initEmbed } from "../ai/embed.js";
 import WebSocket from "ws"; // 如果想要Agent持有一个websocket连接，可以这样引入WebSocket模块
 import { OutputQueue } from "./outputQueue.js"
 import { AgentState } from "../memory/agentState.js"
+import { SkillManager } from "./SkillManager.js"
 
 export class Agent {
   constructor(name) {
@@ -21,6 +22,8 @@ export class Agent {
     this.queue = []; // 统一事件队列
     this.processing = false;
     this.processingPromise = null;
+    this.skillManager = new SkillManager(["./FileSystem/skills/"]);
+    this.activeSkill = null
 
     this.semanticMemory = new MemoryManager();   // ← 加这一行
 
@@ -30,7 +33,8 @@ export class Agent {
   }
 
   async init() {
-    await initEmbed(); 
+    await initEmbed();
+    this.skillManager.loadSkills();
     this.agentState.init(); // 初始化Agent状态管理器
     await this.semanticMemory.init(); // 初始化记忆管理器
     await this.llm.init(); // 初始化LLM管理器
@@ -145,14 +149,17 @@ export async function handleMessageGeneric(agent, message) {
     agent.historyManager.pushHistory({ role: msgObj.role || "user", content: msgObj.content });
   }
   // ===== RAG：检索记忆 =====
-  const messages = await buildMessages(
-    agent.semanticMemory,
-    agent.agentState,
-    agent.agentState,
-    msgObj.content,
-    msgObj.content,
-    ["recent","longterm"]
-  );
+  const messages = await buildMessages({
+  semanticMemory: agent.semanticMemory,
+  agentState: agent.agentState,
+  skillManager: agent.skillManager,
+  activate_skill: agent.activate_skill,
+  userInput: msgObj.content,
+  query: msgObj.content,
+  types: ["recent","longterm"]
+})
+
+console.log(messages)
 
   const MAX_HISTORY = 50;
   const context = buildContext(agent, MAX_HISTORY);
@@ -162,7 +169,7 @@ export async function handleMessageGeneric(agent, message) {
   ]);
 
   console.log("[Agent-001]:");
-  output.push(response.content, 2000)
+  // output.push(response.content, 2000)
   // const messageToWebSocket = {
   //   from: agent.WebSocketID,
   //   content: response
@@ -179,7 +186,10 @@ export async function handleMessageGeneric(agent, message) {
       try { args = JSON.parse(call.function.arguments); } catch {}
       const result = (await runTool(call.function.name, args, {
         semanticMemory: agent.semanticMemory,
+        skillManager: agent.skillManager,
+        activate_skill: agent.activate_skill,
         agentState: agent.agentState,
+        agent: agent,
         ws: agent.ws,
         wsID: agent.wsID
       })) ?? "[tool returned nothing]";

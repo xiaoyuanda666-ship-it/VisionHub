@@ -1,8 +1,15 @@
 {
-  "name": "visionhub",
+  "name": "@xiaoyuanda/visioncore",
   "version": "1.0.0",
-  "description": "一个连接人类与 AI Agent 的统一平台，通过消息分发器实现交互。用户可以通过自然语言创建、配置和管理自主智能体（Autonomous Agent）。命令 Agent（Command Agent）在后台负责系统级管理，对用户完全透明；自主 Agent 拥有记忆、周期性思考（Tick），能与用户及其他 Agent 自主交流。零配置启动，支持扩展，是一个 AI 驱动的智能体生态系统。",
+  "description": "AI agent system",
   "main": "index.js",
+  "bin": {
+    "visioncore": "./bin/index.js"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "keywords": [],
   "scripts": {
     "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js",
     "prompt": "node test-prompts/prompt.js"
@@ -11,9 +18,8 @@
     "type": "git",
     "url": "git+https://github.com/xiaoyuanda666-ship-it/VisionHub.git"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "author": "xiaoYuanda",
+  "license": "MIT",
   "type": "module",
   "jest": {
     "testEnvironment": "node",
@@ -25,14 +31,23 @@
   "homepage": "https://github.com/xiaoyuanda666-ship-it/VisionHub#readme",
   "dependencies": {
     "@lancedb/lancedb": "^0.26.2",
+    "@modelcontextprotocol/sdk": "^1.27.1",
+    "@xiaoyuanda/visioncore": "^1.0.0",
+    "axios": "^1.13.6",
     "better-sqlite3": "^12.6.2",
+    "chalk": "^5.6.2",
     "dotenv": "^17.3.1",
+    "enquirer": "^2.4.1",
     "express": "^5.2.1",
     "fs-extra": "^11.3.4",
+    "gray-matter": "^4.0.3",
+    "initra": "^1.0.38",
     "lodash.merge": "^4.6.2",
     "node-fetch": "^3.3.2",
     "node-llama-cpp": "^3.17.1",
     "openai": "^6.27.0",
+    "ora": "^9.3.0",
+    "prompts": "^2.4.2",
     "sqlite3": "^5.1.7",
     "uuid": "^13.0.0",
     "ws": "^8.19.0"

@@ -5,6 +5,7 @@ import crypto from 'crypto';
 import { OpenAIClient } from '../core/providers/OpenAIClient.js';
 import { DeepSeekClient } from '../core/providers/DeepSeekClient.js';
 import { QwenClient } from '../core/providers/QwenLLMClient.js';
+import { MiniMaxClient } from '../core/providers/MiniMaxClient.js';
 
 // const STORE_FILE = path.resolve('./apikeys.json');
 const STORE_FILE = path.join(
@@ -69,6 +70,7 @@ async function detectProvider(apiKey) {
     { name: 'openai', ClientClass: OpenAIClient },
     { name: 'deepseek', ClientClass: DeepSeekClient },
     { name: 'qwen', ClientClass: QwenClient },
+    { name: 'minimax', ClientClass: MiniMaxClient }
   ];
 
   const promises = clients.map(({ name, ClientClass }) =>
@@ -96,6 +98,7 @@ function initClient(provider, apiKey) {
   if (provider === 'deepseek') return new DeepSeekClient({ apiKey });
   if (provider === 'openai') return new OpenAIClient({ apiKey });
   if (provider === 'qwen') return new QwenClient({ apiKey });
+  if (provider === 'minimax') return new MiniMaxClient({ apiKey });
   throw new Error('Unknown provider');
 }
 

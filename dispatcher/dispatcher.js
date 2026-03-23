@@ -3,7 +3,7 @@ import ConnectionManager from "./connectionManager.js"
 import Router from "./router.js"
 
 export default class Dispatcher {
-  constructor(port = 8080) {
+  constructor(port = 8082) {
     this.wss = new WebSocketServer({ port })
     this.cm = new ConnectionManager()
     this.router = new Router(this.cm)

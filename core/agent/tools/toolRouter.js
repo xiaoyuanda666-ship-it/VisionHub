@@ -12,6 +12,7 @@ import { modify_nowMemory } from "./memory/modify_nowMemory.js";
 import { modify_self } from "./memory/modify_self.js";
 import { modify_talking_to } from "./memory/modify_talking_to.js";
 import { activate_skill } from "./impl/activate_skill.js";
+import { update_display, clear_display } from "./impl/update_display.js";
 
 export async function runTool(name, args, context) {
 
@@ -55,6 +56,12 @@ export async function runTool(name, args, context) {
 
     case "execute_code":
       return execute_code(args);
+
+    case "update_display":
+      return await update_display(args, context);
+
+    case "clear_display":
+      return await clear_display(args, context);
 
     // case "sendMessageToTUIChannel":
     //   return sendMessageToTUIChannel(args);

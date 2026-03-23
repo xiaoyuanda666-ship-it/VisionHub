@@ -2,7 +2,7 @@ import WebSocket from "ws"
 import readline from "readline"
 import { nowString } from "../utils/time.js";
 
-const ws = new WebSocket("ws://localhost:8080")
+const ws = new WebSocket("ws://localhost:8082")
 
 const rl = readline.createInterface({
   input: process.stdin,
@@ -18,6 +18,7 @@ ws.on("open", () => {
 })
 
 ws.on("message", (data) => {
+  console.log("Received message:", data.toString())
   const msg = JSON.parse(data.toString())
 
   if (msg.type === "welcome") {

@@ -266,6 +266,47 @@ export const tools = [
       required: ["code"]
     }
   }
+},
+{
+  type: "function",
+  function: {
+    name: "update_display",
+    description: "在实时显示网页上显示信息。当AI Agent需要向用户展示信息（如天气、搜索结果、计算结果等）时使用此工具。信息会实时显示在网页上。",
+    parameters: {
+      type: "object",
+      properties: {
+        type: {
+          type: "string",
+          description: "信息类型，可选值：info（默认）, weather, error, success",
+          enum: ["info", "weather", "error", "success"]
+        },
+        title: {
+          type: "string",
+          description: "可选的标题"
+        },
+        content: {
+          type: "string",
+          description: "要显示的文本内容"
+        },
+        data: {
+          type: "object",
+          description: "可选的JSON数据对象"
+        }
+      },
+      required: ["content"]
+    }
+  }
+},
+{
+  type: "function",
+  function: {
+    name: "clear_display",
+    description: "清空实时显示网页上的所有内容",
+    parameters: {
+      type: "object",
+      properties: {}
+    }
+  }
 }
 
 ];

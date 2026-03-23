@@ -4,7 +4,7 @@ let embeddingContext
 export async function initEmbed() {
   const llama = await getLlama()
   const model = await llama.loadModel({
-    modelPath: "../VisionHub/core/agent/models/embeddinggemma-300m-q4_k_m.gguf",
+    modelPath: "../VisionCore/core/agent/models/embeddinggemma-300m-q4_k_m.gguf",
   })
 
   embeddingContext = await model.createEmbeddingContext()

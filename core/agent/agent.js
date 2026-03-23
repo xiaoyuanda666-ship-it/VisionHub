@@ -28,7 +28,7 @@ export class Agent {
     this.semanticMemory = new MemoryManager();   // ← 加这一行
 
     this.llm = new LLMManager(); // LLM 管理器
-    this.ws = new WebSocket("ws://localhost:8080"); // 初始化WebSocket连接
+    this.ws = new WebSocket("ws://localhost:8082"); // 初始化WebSocket连接
     this.agentState = new AgentState(); // 初始化Agent状态管理器
   }
 
@@ -94,9 +94,9 @@ export class Agent {
       const event = this.queue.shift();
 
       if (event.type === "tick") {
-        // this.historyManager.pushHistory({ role: "system", content: event.time });
+        this.historyManager.pushHistory({ role: "user", content: event.content });
         await handleMessageGeneric(this, event.content);
-        await this.metaAbilityManager.tickAll({ agent: this, message: event.time });
+        // await this.metaAbilityManager.tickAll({ agent: this, message: event.time });
         continue;
       }
 
@@ -114,7 +114,7 @@ const output = new OutputQueue()
 async function getSubconscious(agent, message){
   const messages = `你是关联词生成器，生成的关联词要和用户输入紧密相关，用空格隔开，严格遵循输出格式,不管用户说什么，你都要生成最关联的一个到十个关键词 如果是系统 Tick，就原封不动返回，响应示例：(xx xx xx xx xx xx xx xx xx xx)
   注意事项，不要问问题，不要返回多余的解释，不要返回多余的文字，只输出关联关键词`
-  const response = await agent.llm.call("deepseek-chat", [
+  const response = await agent.llm.call("MiniMax-M2.7", [
     { role: "system", content: messages },
     { role: "user", content: message }
   ]);
@@ -129,9 +129,10 @@ export async function handleMessageGeneric(agent, message) {
   let msgObj;
   try {
     msgObj = JSON.parse(message);
-  } catch {
+  } 
+  catch {
     if (typeof message === "string" && message.startsWith("[系统Tick]")) {
-      msgObj = { role: "assistant", content: message };
+      msgObj = { role: "user", content: message };
     } else {
       msgObj = { role: "user", content: message };
     }
@@ -140,8 +141,8 @@ export async function handleMessageGeneric(agent, message) {
   // 如果是系统 Tick，直接更新潜意识，但不存历史
   const isTick = typeof msgObj.content === "string" && msgObj.content.startsWith("[系统Tick]");
 
-  const subconscious = await getSubconscious(agent, msgObj.content);
-  agent.agentState.set("subconscious", subconscious);
+  // const subconscious = await getSubconscious(agent, msgObj.content);
+  // agent.agentState.set("subconscious", subconscious);
 
   // 只存非 Tick 消息
   if (!isTick) {
@@ -159,12 +160,13 @@ export async function handleMessageGeneric(agent, message) {
   types: ["recent","longterm"]
 })
 
-console.log(messages)
+// console.log("messages",messages)
 
   const MAX_HISTORY = 50;
   const context = buildContext(agent, MAX_HISTORY);
-  const response = await agent.llm.call("deepseek-chat", [
-    { role: "system", content: messages },
+
+  const response = await agent.llm.call("MiniMax-M2.7", [
+    { role: "user", content: messages },
     ...context
   ]);
 
@@ -203,7 +205,7 @@ console.log(messages)
     // 工具执行后再次调用 LLM
     const contextAfterTool = buildContext(agent, MAX_HISTORY);
     // output.push(contextAfterTool, 3000)
-    const second = await agent.llm.call("deepseek-chat", [
+    const second = await agent.llm.call("MiniMax-M2.7", [
       { role: "system", content: agent.systemPrompt },
       ...contextAfterTool
     ]);

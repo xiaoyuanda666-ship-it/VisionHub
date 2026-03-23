@@ -20,6 +20,9 @@ export class LLMManager {
         this.modelMap["gpt-4o-mini"] = "openai"
         this.modelMap["gpt-4o"] = "openai"
       }
+      if (provider === "minimax") {
+        this.modelMap["MiniMax-M2.7"] = "minimax"
+      }
     }
     this.ready = true
   }

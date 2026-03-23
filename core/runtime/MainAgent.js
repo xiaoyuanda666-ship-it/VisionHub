@@ -5,7 +5,7 @@ const agentName = process.argv[2];
 console.log("Agent starting:", agentName);
 
 const agent = new Agent(agentName);
-const TICK_INTERVAL = Number(process.env.AGENT_TICK_INTERVAL) || 5000;
+const TICK_INTERVAL = Number(process.env.AGENT_TICK_INTERVAL) || 20000;
 
 async function start() {
   console.log("Genesis runtime starting...");

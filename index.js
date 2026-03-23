@@ -1,7 +1,7 @@
 import Dispatcher from './dispatcher/dispatcher.js'
 import { TUIChannel } from "./channels/tuiChannel.js";
 
-const dispatcher = new Dispatcher(8080);
+const dispatcher = new Dispatcher(8082);
 
 const tui = new TUIChannel();
 dispatcher.registerChannel("tui", tui);
